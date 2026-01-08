@@ -80,16 +80,16 @@ app.post('/deletegame', async (req, res) => {
     }
 });
 
-app.delete('/deletegame/:id', async (req, res) => {
+app.get('/deletegame/:id', async (req, res) => {
     const { id } = req.params;
     try {
         let connection = await mysql.createConnection(dbConfig);
         await connection.execute('DELETE FROM nintendo_games WHERE id = ?', [id]);
         await connection.end();
-        res.json({ message: 'Game deleted successfully' });
+        res.json({ message: 'Game with ID ' + id + ' deleted successfully' });
     } catch (err) {
         console.error(err);
-        res.status(500).json({ message: 'Server error deleting game' });
+        res.status(500).json({ message: 'Server error - could not delete game' });
     }
 });
 
