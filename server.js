@@ -35,12 +35,12 @@ app.get('/allgames', async (req, res) => {
 });
 
 app.post('/addgame', async (req, res) => {
-    const { game_title, description } = req.body;
+    const { game_title, description, photo_url } = req.body; 
     try {
         let connection = await mysql.createConnection(dbConfig);
         await connection.execute(
-            'INSERT INTO nintendo_games (game_title, description) VALUES (?, ?)',
-            [game_title, description]
+            'INSERT INTO nintendo_games (game_title, description, photo_url) VALUES (?, ?, ?)',
+            [game_title, description, photo_url]
         );
         await connection.end();
         res.status(201).json({ message: game_title + ' added successfully' });
@@ -52,12 +52,12 @@ app.post('/addgame', async (req, res) => {
 
 app.put('/updategame/:id', async (req, res) => {
     const { id } = req.params;
-    const { game_title, description } = req.body;
+    const { game_title, description, photo_url } = req.body;
     try {
         let connection = await mysql.createConnection(dbConfig);
         await connection.execute(
-            'UPDATE nintendo_games SET game_title = ?, description = ? WHERE id = ?',
-            [game_title, description, id]
+            'UPDATE nintendo_games SET game_title = ?, description = ?, photo_url = ? WHERE id = ?',
+            [game_title, description, photo_url, id]
         );
         await connection.end();
         res.json({ message: 'Game updated successfully' });
